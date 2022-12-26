@@ -17,7 +17,7 @@ def setUpBorderPoints(left_top_lat, left_top_lon, right_bot_lat, right_bot_lon):
     df.to_csv('border_points_v2.csv', index=False)
 
     return df
-
+ 
 
 def setUpMeasurePoints(size, borderPoints = None):
     """
