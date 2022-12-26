@@ -1,0 +1,7 @@
+pandas==1.4.1
+parsel==1.7.0
+plotly==5.11.0
+PyAutoGUI==0.9.53
+scrapfly_sdk==0.8.2
+selenium==4.7.2
+webdriver_manager==3.8.3
