@@ -17,8 +17,9 @@ def showMap(fig):
     fig.show()
 
     # save the page as an HTML file
+    htmlSavingDirectory = 'savedVisualisations/'
     htmlFilename = "measure_points_visualisation_v1"
-    fig.write_html(htmlFilename + ".html")
+    fig.write_html(htmlSavingDirectory + htmlFilename + ".html")
 
 
 def setPlaces(points):
@@ -74,14 +75,15 @@ def visualiseCollectedPoints():
     showMap(placesMap)
 
 
-def visualiseMeasurePoints(size, version):
+def visualiseMeasurePoints(pointsDirectory, numberOfRows, numberOfColumns):
     """
     This function allows visualising points used to collect places from Google Maps.
 
-    :param size: number of columns and rows in measure points dataset
-    :param version: version of measure points file
+    :param pointsDirectory: directory where csv files with generated points are saved
+    :param numberOfRows: number of rows in measure points dataset
+    :param numberOfColumns: number of columns in measure points dataset
     """
-    measurePoints = pd.read_csv('Points_size' + str(size) +  '.csv', index_col=False)
+    measurePoints = pd.read_csv(pointsDirectory + "measure_points_" + str(numberOfRows) + 'r_' + str(numberOfColumns) + 'c'+ ".csv", index_col=False)
     measurePoints['type'] = 'measure point'
     measurePoints['title'] = 'measure point'
     map = setPlaces(measurePoints)
@@ -89,5 +91,10 @@ def visualiseMeasurePoints(size, version):
 
 
 if __name__ == "__main__":
-    visualiseCollectedPoints()
-    # visualiseMeasurePoints(15, 2)
+    pointsDirectory = 'generatedPoints/'
+    # number of "steps" (resolution of the division of the area --> greater value gives more details)
+    numberOfColumns = 15
+    numberOfRows = 3
+
+    #visualiseCollectedPoints()
+    visualiseMeasurePoints(pointsDirectory, numberOfRows, numberOfColumns)

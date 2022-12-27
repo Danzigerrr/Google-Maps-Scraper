@@ -1,6 +1,10 @@
-# Google Maps Scrapper
+# Google Maps Scraper
 
-Google Maps Scrapper allows you to collect data from the given area about places of the specified type from Google Maps. The user needs to set the points which set the area of interest - the points are opposite corners of the square. The user also sets the zoom as well as the resolution of the search - the area is divided into X columns and X rows. The program will search for the places at each of the points with a set zoom. Finally, the collected data is saved in a CSV file.
+Google Maps Scrapper allows you to collect data from the given area about places of the specified type from Google Maps. The user needs to set the points which set the area of interest - the points are opposite corners of a rectangle.
+The user also sets the zoom as well as the resolution of the search - the area is divided into X columns and Y rows. The program will search for the places at each of the points with a set zoom.
+Finally, the collected data is saved in a CSV file.
+
+The time needed to collect the data depends on the number of measure points and the number of results returned by Google Maps. It takes approximately 15 minutes to scrape area of city of Gdańsk in Poland with 175 measure points.
 
 ## Installation
 
@@ -12,22 +16,23 @@ pip install requirements.txt
 
 ## Usage
 ### Define the area of interest - set the border and measure points
-Use the file *BorderAndMeasurePoints.py* to set the location of two points: point A (left upper corner) and Point B (bottom right corner) - the opposite corners of the square covering the area of interest. Use the parameter *size* to set the number of columns and rows which divide the area. Finally use the *setUpBorderPoints()* and *setUpMeasurePoints()* functions to generate the points.
+Use the file *BorderAndMeasurePoints.py* to set the location of two points: point A (left upper corner) and Point B (bottom right corner) - the opposite corners of a rectangle covering the area of interest. Use the parameter *numberOfColumns* and *numberOfRows* to set the number of columns and rows which divide the area. Finally, use the *setUpBorderPoints()* and *setUpMeasurePoints()* functions to generate the points.
 
 ```python
     # Point A (left upper corner)
-    point_a_lat = 54.44856818820764
-    point_a_lon = 18.42538889812534
+    pointA = (54.44856818820764, 18.42538889812534)
 
     # Point B (right bottom corner)
-    point_b_lat = 54.26192258463519
-    point_b_lon = 18.943841464421837
+    pointB = (54.26192258463519, 18.943841464421837)
 
     # number of "steps" (resolution of the division of the area --> greater value gives more details)
-    size = 15
+    numberOfColumns = 15
+    numberOfRows = 3
 
-    borderPoints = setUpBorderPoints(point_a_lat, point_a_lon, point_b_lat, point_b_lon)
-    setUpMeasurePoints(size, borderPoints)
+    if checkLocationOfBorderPoints(pointA, pointB):
+        borderPoints = setUpBorderPoints(savingDirectory, pointA, pointB)
+        setUpMeasurePoints(savingDirectory, numberOfRows, numberOfColumns, borderPoints)
+
 ```
 
 ### Visualise the measure points
@@ -36,7 +41,7 @@ Use the method *visualiseMeasurePoints()* to see the measure points on the map. 
 The measure points look like this:
 ![measurePointsVisualised_1.jpg](readmeImages/measurePointsVisualised_1.jpg)
 
-Since the measure points are saved into a CSV file, it is easy to delete the location of points that are not needed in the search process, for example points at sea. Deleting needed points will optimize the search process and reduce the time needed to analyze the given area. 
+Since the measure points are saved into a CSV file, it is easy to delete the location of points that are not needed in the search process, for example points at sea. Manually deleting unneeded points will optimize the search process and reduce the time needed to analyze the given area. 
 The optimized measure points look like this:
 ![measurePointsVisualised_2.jpg](readmeImages/measurePointsVisualised_2.jpg)
 

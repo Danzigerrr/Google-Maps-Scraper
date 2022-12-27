@@ -139,7 +139,8 @@ def generateUrls(typeOfPlace):
     :param typeOfPlace: type of place searched in Google Maps
     :return: list of generated URLs containing type of place, searched location, and zoom of searching
     """
-    points_df = pd.read_csv("Points_size15_v2.csv", index_col=False)
+    pointsDirectory = "generatedPoints/"
+    points_df = pd.read_csv(pointsDirectory + "Points_size_15r_15c_optimized.csv", index_col=False)
 
     base = 'https://www.google.com/maps/search/'
 
@@ -149,13 +150,9 @@ def generateUrls(typeOfPlace):
         point_lat = points_df.at[index, 'lat']
         point_lon = points_df.at[index, 'lon']
         zoom = 16
-        # zoom = 14
         url = base
-        # url += str(types) + '+near+Gdansk,+Poland/@'
         url += str(typeOfPlace) + '/@'
         url += str(point_lat) + ',' + str(point_lon) + ',' + str(zoom) + 'z'
-        # print(url)
-        # print('https://www.google.com/maps/search/bars+near+Gdansk,+Poland/@54.37083931588029,18.609653070782628,13z')
         generated_urls.append(url)
     return generated_urls
 
@@ -169,7 +166,6 @@ if __name__ == "__main__":
 
     if len(types_of_places) == 0:
         types_of_places = ['bar', 'cinema', 'office']  # set the types of searched places
-
 
     print(types_of_places)
     for typeOfPlace in types_of_places:
