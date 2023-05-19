@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from parsel import Selector
@@ -10,6 +9,8 @@ import re
 import time
 import sys
 from PlacesVisualiser import *
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
 
 googleAcceptButtonClicked = False
 
@@ -43,13 +44,16 @@ def scrollDownLeftMenuOnGoogleMaps(counter, waitingTime):
     :param counter: number of scrolls down
     :param waitingTime: waiting time until next scroll (new results are loaded)
     """
-    menu_xpath = '/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]/div[3]/div/a'
-
+    menu_xpath = '/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]/div[3]/div'
     if check_exists_by_xpath(menu_xpath):
         for i in range(counter):
+            # wait until element is located
             wait = WebDriverWait(driver, waitingTime)
             menu_left = wait.until(EC.visibility_of_element_located((By.XPATH, menu_xpath)))
-            menu_left.send_keys(Keys.SPACE)
+
+            # perform scrolling down
+            scroll_origin = ScrollOrigin.from_element(menu_left)
+            ActionChains(driver).scroll_from_origin(scroll_origin, 0, 500).perform()
 
 
 def searchForPlace(url, typeOfPlace):
